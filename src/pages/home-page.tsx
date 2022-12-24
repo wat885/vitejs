@@ -9,11 +9,14 @@ import {
   IconProps,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { selectAuthState } from "../redux-toolkit/auth/auth-slice";
+import { useAppSelector } from "../redux-toolkit/hooks";
 
 import homepageStyle from "../styles/homepage.module.css";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { profile, email } = useAppSelector(selectAuthState);
 
   return (
     <Container maxW={"5xl"}>
@@ -23,7 +26,12 @@ export default function HomePage() {
         spacing={{ base: 8, md: 10 }}
         py={{ base: 20, md: 28 }}
       >
-        <p className={homepageStyle.title}>ยินดีต้อนรับ</p>
+        <p className="myTitle">
+          ยินดีต้อนรับ {profile} {email}
+        </p>
+        <p className={homepageStyle.title}>
+          Hello {profile} {email}
+        </p>
         <Heading
           fontWeight={600}
           fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
