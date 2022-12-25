@@ -33,7 +33,9 @@ import {
   FiChevronDown,
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLoaderData, useLocation, useNavigate } from 'react-router-dom';
+import { logout } from '../../services/auth.service';
+import { User } from '../../app-types/profile.type';
 
 
 interface LinkItemProps {
@@ -148,6 +150,10 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const nevigate = useNavigate()
+  const user = useLoaderData() as User
+
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -200,9 +206,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2">
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">{user.name}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {user.role}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -214,10 +220,19 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}>
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              {
+                user.role === 'admin' && <MenuItem>Settings</MenuItem>
+              }
+              
+
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem
+                onClick={()=>{
+                  logout()
+                  nevigate('/')
+                }}
+              >Log out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

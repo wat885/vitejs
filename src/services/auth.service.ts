@@ -1,4 +1,5 @@
 import { LoginResponse } from "../app-types/login.type";
+import { ProfileResponse } from "../app-types/profile.type";
 import { AxiosResponse, http } from "./http.service";
 
 
@@ -15,4 +16,12 @@ export function logout(): void {
 }
 
 
-export function getProfile() {}
+export async function getProfile(): Promise<AxiosResponse<ProfileResponse, any> | null> {
+    const token =JSON.parse(localStorage.getItem('token')!) as LoginResponse;;
+    if(!token){
+        return null
+    }
+    return await http.get<ProfileResponse>('https://api.codingthailand.com/api/profile', {
+        headers: { Authorization: 'Bearer ' + token.access_token }
+    })
+}
