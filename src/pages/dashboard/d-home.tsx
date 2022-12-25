@@ -1,7 +1,7 @@
 function DHome() {
     return ( 
-        <p> Dashboard Home</p>
-     );
+        <p>Dashboard Home</p>
+    );
 }
 
 export default DHome;
